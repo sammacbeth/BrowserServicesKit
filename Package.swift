@@ -38,7 +38,10 @@ let package = Package(
                 "Resources/duckduckgo-autofill/scripts/release.js"
             ],
             resources: [
-                .process("Resources/duckduckgo-autofill/dist/autofill.js")
+                .process("Resources/duckduckgo-autofill/dist/autofill.js"),
+                .process("Resources/duckduckgo-autofill/dist/TopAutofill.html"),
+                .process("Resources/duckduckgo-autofill/dist/topAutofill.js"),
+                .process("Autofill/ContentOverlay.storyboard")
             ]),
         .testTarget(
             name: "BrowserServicesKitTests",
