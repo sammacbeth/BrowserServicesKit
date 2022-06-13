@@ -69,8 +69,8 @@ public class TrackerResolver {
         // Make sure current page is not affilated with the tracker
         if let pageUrl = URL(string: pageUrlString),
            let pageHost = pageUrl.host,
-           let pageEntity = tds.findEntity(forHost: pageHost),
-           pageEntity.displayName == entity.displayName {
+           let pageEntity = tds.findEntity(forHost: pageHost, resolveParents: false),
+           pageEntity.displayName == tracker.owner?.displayName {
             return DetectedTracker(url: trackerUrlString, knownTracker: tracker, entity: entity, blocked: false, pageUrl: pageUrlString)
         }
 
