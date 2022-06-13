@@ -28,7 +28,7 @@ extension TrackerData {
     
     public func findEntity(forHost host: String) -> Entity? {
         for host in variations(of: host) {
-            if let entityName = domains[host] {
+            if let entityName = parentEntity(for: host) {
                 return entities[entityName]
             }
         }

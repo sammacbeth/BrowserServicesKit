@@ -39,11 +39,11 @@
       },
       {
         "package": "TrackerRadarKit",
-        "repositoryURL": "https://github.com/duckduckgo/TrackerRadarKit",
+        "repositoryURL": "https://github.com/sammacbeth/TrackerRadarKit",
         "state": {
-          "branch": null,
-          "revision": "f4f31cf466f78d9e85bd1c0fae85fd4f66e93347",
-          "version": "1.0.4"
+          "branch": "smacbeth/entity-parents",
+          "revision": "fec650d0cd28b0baea4c28966f395c14894cef43",
+          "version": null
         }
       }
     ]

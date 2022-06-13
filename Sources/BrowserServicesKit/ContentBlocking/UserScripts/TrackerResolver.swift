@@ -38,7 +38,7 @@ public class TrackerResolver {
                                potentiallyBlocked: Bool) -> DetectedTracker? {
         
         guard let tracker = tds.findTracker(forUrl: trackerUrlString),
-              let entity = tds.findEntity(byName: tracker.owner?.name ?? "") else {
+              let entity = tds.findEntity(byName: tracker.owner?.attributedTo ?? tracker.owner?.name ?? "") else {
             return nil
         }
 

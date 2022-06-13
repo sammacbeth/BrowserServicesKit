@@ -229,4 +229,42 @@ class TrackerResolverTests: XCTestCase {
         XCTAssert(result?.blocked ?? false)
         XCTAssertEqual(result?.knownTracker, another)
     }
+    
+    func testTrackerFromUrlWithChildEntity() {
+        let tracker = KnownTracker(domain: "tracker.com",
+                                   defaultAction: .block,
+                                   owner: KnownTracker.Owner(name: "Tracker Inc",
+                                                             displayName: "Tracker Inc company"),
+                                   prevalence: 0.1,
+                                   subdomains: nil,
+                                   categories: nil,
+                                   rules: nil)
+        
+        let another = KnownTracker(domain: "another.com",
+                                   defaultAction: .block,
+                                   owner: KnownTracker.Owner(name: "Another Inc",
+                                                             displayName: "Another Inc company",
+                                                             attributedTo: "Tracker Inc"),
+                                   prevalence: 0.1,
+                                   subdomains: nil,
+                                   categories: nil,
+                                   rules: nil)
+        let tds = TrackerData(trackers: ["tracker.com" : tracker,
+                                         "another.com" : another],
+                              entities: ["Tracker Inc": Entity(displayName: "Tracker Inc company",
+                                                               domains: ["tracker.com"],
+                                                               prevalence: 0.1),
+                                         "Another Inc": Entity(displayName: "Another Inc company",
+                                                                          domains: ["another.com"],
+                                                                          prevalence: 0.1)],
+                              domains: ["tracker.com": "Tracker Inc",
+                                        "another.com": "Another Inc."],
+                              cnames: ["sub.another.com": "tracker.com"])
+        
+        let resolver = TrackerResolver(tds: tds, unprotectedSites: [], tempList: [])
+        
+        let result = resolver.trackerFromUrl("https://sub.another.com/img/1.png", pageUrlString: "https://example.com", resourceType: "image", potentiallyBlocked: true)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.entity?.displayName, tracker.owner?.displayName)
+    }
 }
