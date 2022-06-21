@@ -43,12 +43,14 @@ public class TrackerResolver {
         }
 
         let blocked: Bool
+        let reason: String
 
         // Check for unprotected domains
         if let pageDomain = URL(string: pageUrlString),
            let pageHost = pageDomain.host,
            unprotectedSites.contains(pageHost) || tempList.contains(pageHost) {
             blocked = false
+            reason = "unprotected"
         } else {
             // Check for custom rules
             let rule = tracker.hasRule(for: trackerUrlString, type: resourceType, pageUrlString: pageUrlString)
@@ -56,13 +58,17 @@ public class TrackerResolver {
             case .none:
                 if tracker.defaultAction == .block {
                     blocked = potentiallyBlocked
+                    reason = "defaultBlock"
                 } else /* if tracker.defaultAction == .ignore */ {
                     blocked = false
+                    reason = "defaultIgnore"
                 }
             case .allowRequest:
                 blocked = false
+                reason = "matchedRuleIgnore"
             case .blockRequest:
                 blocked = potentiallyBlocked
+                reason = "matchedRuleBlock"
             }
         }
         
@@ -71,10 +77,10 @@ public class TrackerResolver {
            let pageHost = pageUrl.host,
            let pageEntity = tds.findEntity(forHost: pageHost, resolveParents: false),
            pageEntity.displayName == tracker.owner?.displayName {
-            return DetectedTracker(url: trackerUrlString, knownTracker: tracker, entity: entity, blocked: false, pageUrl: pageUrlString)
+            return DetectedTracker(url: trackerUrlString, knownTracker: tracker, entity: entity, blocked: false, pageUrl: pageUrlString, reason: "sameEntity")
         }
 
-        return DetectedTracker(url: trackerUrlString, knownTracker: tracker, entity: entity, blocked: blocked, pageUrl: pageUrlString)
+        return DetectedTracker(url: trackerUrlString, knownTracker: tracker, entity: entity, blocked: blocked, pageUrl: pageUrlString, reason: reason)
     }
 
     enum RuleAction {

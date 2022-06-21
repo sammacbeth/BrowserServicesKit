@@ -28,13 +28,15 @@ public struct DetectedTracker: Encodable {
     public let entity: Entity?
     public let blocked: Bool
     public let pageUrl: String
+    public let reason: String?
     
-    public init(url: String, knownTracker: KnownTracker?, entity: Entity?, blocked: Bool, pageUrl: String) {
+    public init(url: String, knownTracker: KnownTracker?, entity: Entity?, blocked: Bool, pageUrl: String, reason: String? = nil) {
         self.url = url
         self.knownTracker = knownTracker
         self.entity = entity
         self.blocked = blocked
         self.pageUrl = pageUrl
+        self.reason = reason
     }
 
     public var domain: String? {
@@ -44,7 +46,6 @@ public struct DetectedTracker: Encodable {
     public var networkNameForDisplay: String {
         return entity?.displayName ?? domain ?? url
     }
-
 }
 
 extension DetectedTracker: Hashable, Equatable {
@@ -60,3 +61,4 @@ extension DetectedTracker: Hashable, Equatable {
     }
     
 }
+

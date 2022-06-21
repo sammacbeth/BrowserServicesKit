@@ -160,6 +160,7 @@ class TrackerResolverTests: XCTestCase {
     
         XCTAssertNotNil(result)
         XCTAssertFalse(result!.blocked)
+        XCTAssertEqual(result?.reason, "sameEntity")
     }
     
     func testWhenTrackerIsACnameThenItIsReportedAsSuch() {
@@ -269,6 +270,7 @@ class TrackerResolverTests: XCTestCase {
         XCTAssertEqual(result?.entity?.displayName, tracker.owner?.displayName)
         // same-entity rule does not apply here
         XCTAssert(result?.blocked ?? true)
+        XCTAssertEqual(result?.reason, "defaultBlock")
     }
     
     func testTrackerFromUrlWithParentEntity() {
